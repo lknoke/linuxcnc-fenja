@@ -1,0 +1,4 @@
+# Benutzerdefinierte HAL-Anweisungen können nachfolgend angegeben werden
+# Die Befehle in dieser Datei werden nach der AXIS GUI (und PyVCP-Panel) ausgeführt.
+
+#sets spindle-at-speed true

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="2.24"/>
+  <!-- interface-requires gladevcp 0.0 -->
+  <!-- interface-naming-policy project-wide -->
+  <object class="GtkWindow" id="window1">
+    <property name="can_focus">False</property>
+    <child>
+      <object class="CamView" id="camview1">
+        <property name="visible">True</property>
+        <property name="camera">0</property>
+        <property name="draw_color">#FFFF00</property>
+        <property name="frame_width">640</property>
+		<property name="frame_height">480</property>
+		<property name="circle_size">100</property>
+		<property name="number_of_circles">1</property>
+		<property name="radius_difference">10</property>
+		<property name="autosize">false</property>
+		<property name="cam_settings"></property>
+      </object>
+    </child>
+  </object>
+</interface>
+

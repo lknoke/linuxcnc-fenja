@@ -1,0 +1,72 @@
+# Benutzerdefinierte HAL-Anweisungen können nachfolgend angegeben werden
+# Diese Datei wird überschrieben, wenn stepconf erneut ausgeführt wird.
+
+
+#******************************
+# SETUP SPINDLE CONTROL VIA MODBUS
+#******************************
+# VFD Connection via Modbus 
+# Load from different Device (i.e. USB when not using onboard components; Baudrate needs to be set in VFD using Hitachi ProDrive)
+
+loadusr -W wj200_vfd --device /dev/ttyUSB0 --baud 9600 --parity N --data 8 --stop 1
+# loadusr -W wj200_vfd --device /dev/ttyUSB0 --baud 9600 --parity N --stop 1
+
+setp wj200-vfd.0.mbslaveaddr 1
+setp wj200-vfd.0.enable 1
+
+# Connect relevant commands of spindle.0 to wj200-vfd
+net spindle-vel-cmd-rps-abs			=> wj200-vfd.0.commanded-frequency
+net spindle-enable spindle.0.on		=> wj200-vfd.0.run
+net spindle-ccw spindle.0.reverse	=> wj200-vfd.0.reverse
+
+#******************************
+# In der Standardkonfiguration von LinuxCNC ist der Rückgabewert „Solldrehzahl erreicht“ dauerhaft auf „true“
+# Um "net spindle-at-speed" verwenden zu können, in der "custom_postgui.hal" das SET "sets spindle-at-speed = true" auskommentieren "#"
+#******************************
+net spindle-at-speed				<= wj200-vfd.0.is-at-speed
+
+#******************************
+# SETUP WATCHDOG FOR CRITICAL EVENTS
+#******************************
+# Establish Watchdog functions within LinuxCNC - Watch is-alarm and Heartbeat
+# Load watchdog component 
+loadrt watchdog num_inputs=1
+addf watchdog.process servo-thread
+addf watchdog.set-timeouts servo-thread
+setp watchdog.timeout-0 2.0
+net vfd-watchdog wj200-vfd.0.watchdog-out => watchdog.input-0
+setp watchdog.enable-in 1
+
+# Estop lut5 (lut5.0)
+# Load LUT5 look-up table for logic funtions; in this case LUT5 to be HIGH (=enable ok) when
+# 
+loadrt lut5 count=1
+addf lut5.0 servo-thread
+setp lut5.0.function 0x2
+
+net estop-watchdog-timeout watchdog.ok-out => lut5.0.in-0
+net estop-vfd-error wj200-vfd.0.is-alarm => lut5.0.in-1
+net estop-ext => lut5.0.in-2
+#******************************
+# SETUP ESTOP SIGNAL
+#******************************
+# Output to systemwide ESTOP via emc-enable-in in iocontrol 
+net estop-signal lut5.0.out => iocontrol.0.emc-enable-in
+#******************************
+# In der [Name].hal Datei muss auskommentiert („#“) werden "net estop-ext <= parport.0.pin-11-in" und "net estop-ext <= parport.0.pin-11-in" invertiert werden mit "-not"
+#******************************
+
+
+
+#******************************
+# SETUP VARIOUS MESSAGES
+#******************************
+loadrt message names=m_vfd-error,m_vfd-com,m_estop-ext messages="VfD-Error (check vfd-display),Vfd-Communication lost, External E-Stop" 
+addf m_vfd-error servo-thread
+addf m_vfd-com servo-thread
+addf m_estop-ext servo-thread
+
+setp m_vfd-com.edge 0
+net estop-1		=> m_vfd-error.trigger
+net estop-0		=> m_vfd-com.trigger
+net estop-ext	=> m_estop-ext.trigger

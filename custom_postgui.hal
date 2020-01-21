@@ -1,0 +1,8 @@
+# Benutzerdefinierte HAL-Anweisungen können nachfolgend angegeben werden
+# Die Befehle in dieser Datei werden nach der AXIS GUI (und PyVCP-Panel) ausgeführt.
+
+#sets spindle-at-speed true
+
+# Connect spindle information to gmoccapy spindle info display
+net spindle-at-speed	=> gmoccapy.spindle_at_speed_led 
+net spindle-cmd-rps-abs => gmoccapy.spindle_feedback_bar
