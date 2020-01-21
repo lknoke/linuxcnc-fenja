@@ -4,7 +4,7 @@ This repository holds the latest stable version of my LinuxCNC configuration for
 The CNC router's design is based on "Fenja" created by A. Koch of [fraeserbruch.de](https://fraeserbruch.de/ "Fenja's home"). Plans and parts are available through him. The design offers various sizes to choose from and requires the owner to chose drives, spindle and control. Furthermore, it is supported by a great community. I highly recommend this work.
 
 All of the config options presented here are applicable to any CNC router design.
-Many thanks to Oliver (https://github.com/GuiHue/myfenjalinuxcnc/) who is one of my masters in configutation linunxcnc!
+Many thanks to Guido (https://github.com/GuiHue/myfenjalinuxcnc/) who is one of my masters in configutation linunxcnc!
 
 The purpose of this GIT is to have a repo for my own changes to the config. However, as the same questions pop up time and again in various communities, I have chosen to make this public. Note, that LinuxCNC HAL and INI files are very specific to each machines. While the deployed concepts can be transfered easily, specific values and hardware pins are to be analyzed carefully. Do not ever run a foreign config on your machine without checking every detail before hand. I strongly recommend taking ideas from other configs and integrating those into to your own. I will not take responsibility for any damages to your hardware or person.
 
