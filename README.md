@@ -11,10 +11,11 @@ The purpose of this GIT is to have a repo for my own changes to the config. Howe
 A word on licensing: I have chosen GPL3.0, hoping it does not interfer with any other licenses the used components are subject to. Please contact me asap if this is the case so that this can be resolved.
 
 ## Features
-* Based on BENEZAN Triple Beast driver
+* Mill based on BENEZAN Triple Beast driver (http://www.benezan-electronics.de/manuals/TripleBeastBOB-Installation.pdf)
+* Stepper are 3 Nm 4,2 A Nanotec (https://www.upload.sorotec.de/doku/manuals/ST6018L3008.pdf)
 * Runs on LinuxCNC 2.9 with Debian 9 (actually operates on master branch)
-* Uses GMOCCAPY GUI in version 3.x with a touch screen
-* Connects to an Hitachi WJ-200 VFD to control a CHINA spindle with 2.2kW without toolholders
+* Uses GMOCCAPY GUI in version 3.x (with a touch screen)
+* Connect to an Hitachi WJ-200 VFD to control a CHINA spindle with 2.2kW without toolholders
 
 * Uses NC inductive limit switches on each axis and furthermore uses these for homing
 * Connects LinuxCNC to a PILZ safety relais using the relais' semi conductor output. This triggers estop in linuxcnc when a hardware based button is pushed and cuts power to various drives.  
